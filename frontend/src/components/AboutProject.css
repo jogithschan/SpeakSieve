@@ -1,0 +1,40 @@
+/* .box{
+    height:100vh;
+    background:linear-gradient(rgb(0, 213, 255),transparent);
+    background-color:rgb(0, 136, 255) /*this your primary color*/
+
+
+h1:before {
+    content: "";
+    display: block;
+    width: 600px;
+    height: 5px;
+    background: #0003b1;
+    left: 0;
+    top: 11.5%;
+    position: absolute;
+}
+h1:after {
+    content: "";
+    display: block;
+    width: 600px;
+    height: 5px;
+    background: #0003b1;
+    right: 0;
+    top: 11.5%;
+    position: absolute;
+}
+
+.content{
+    margin-left: 0.5%;
+    text-align: left;
+}
+
+h3 {  
+    text-decoration: underline rgb(0, 0, 0) 3px;
+}  
+
+p{
+    margin-right: 5%;
+    text-justify: inter-word;
+}
