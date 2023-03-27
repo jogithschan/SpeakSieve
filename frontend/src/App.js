@@ -7,6 +7,7 @@ import Home from './components/Home';
 import AboutProject from './components/AboutProject';
 import CustomNavbar from './components/CustomNavbar';
 import AboutTeam from './components/AboutTeam';
+import ConfirmedPage from './components/ConfirmedPage'
 
 export const userContext = createContext();
 
@@ -17,6 +18,7 @@ const Routing = () => {
       <Route path="/Home" element = { <Home/> } />
       <Route path="/AboutTeam" element = { <AboutTeam/> } />
       <Route path="/AboutProject" element = { <AboutProject/> } />
+      <Route path="/ConfirmedPage" element = { <ConfirmedPage/> } />
 
     </Routes>
   )

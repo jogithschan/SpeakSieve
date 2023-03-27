@@ -27,6 +27,9 @@ const Home = () => {
                 setFileUrl(reader.result);
             }
         }
+        window.alert("File uploaded successfully")
+
+        window.location = "ConfirmedPage"
     }
 
 
@@ -40,11 +43,11 @@ const Home = () => {
                 
                 <Row>
                     <Col></Col>
-                    <Col sm = {8}>
+                    <Col sm = {5}>
                         <Form>
                             <Form.Group className="mb-3" style={{ padding: 20}}>
                                 <Form.Label>Choose an audio file</Form.Label>
-                                <Form.Control type='file' onChange={updateSelectedFile} accept='audio/*'/>
+                                <Form.Control type='file' onChange={updateSelectedFile} accept='audio/*' />
                             </Form.Group>
                         </Form>
                         <div className="d-grid gap-2">
@@ -71,24 +74,6 @@ const Home = () => {
                     <Col></Col>
                 </Row>
 
-            </Col>
-            <Col>
-                <Card style={{ width: '25rem' }}>
-                    <Card.Body>
-                        <Card.Title>Group Number 2</Card.Title>
-                        <Card.Text>
-                            Group Members:
-                        </Card.Text>
-                    </Card.Body>
-                    <ListGroup className="list-group-flush">
-                        <ListGroup.Item>Akshita Gupta - 2020491</ListGroup.Item>
-                        <ListGroup.Item>Charvi Jindal - 2020045</ListGroup.Item>
-                        <ListGroup.Item>Chetan - 2020046</ListGroup.Item>
-                        <ListGroup.Item>Jogith S Chandran - 2020072</ListGroup.Item>
-                        <ListGroup.Item>Shivam Agrawal - 2020124</ListGroup.Item>
-                        <ListGroup.Item>Utkarsh Arora - 2020143</ListGroup.Item>
-                    </ListGroup>
-                </Card>
             </Col>
         </Row>
         </Container>

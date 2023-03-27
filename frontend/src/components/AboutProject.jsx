@@ -6,13 +6,13 @@ const AboutProject = () => {
   return (
     
     <div class = "box">
-      <div>
+      <div class = "heading">
         <h1>About Project</h1>
       </div>
       <br></br>
       
       <div class = "content">
-        <h3>Problem Statement</h3>
+        <div class = "heading3"><h3>Problem Statement</h3></div>
         <p>
         To extract any kind of information, such as context, topic, speakers, etc. from audios, one will have to listen to the entire audio, which is a time consuming and tiring process. It can be done by going through a series of steps - noise clearing, speaker separation, transcription, etc - but that requires some experience in using such tools. Even if a compact tool exists, it is paid or too complex to be used for quick work. 
 We aim to ease the process of information retrieval from audios, by combining various steps and providing a number of basic features which will be user-friendly and handy for everyone. 
@@ -21,7 +21,7 @@ We aim to ease the process of information retrieval from audios, by combining va
       </div>
       <br></br>
       <div class = "content">
-        <h3>The Idea</h3>
+        <div class = "heading3"><h3>The Idea</h3></div>
         <p>
         The idea of our web app is providing a single-source audio speaker separation which isolates a speaker’s voice form a mixture of multiple speakers in a audio recording which is different from application services like moises as they separate vocals from music and other elements which are relatively distinct and can recognized as individual parts by the algorithms used. Alternatively, adobe podcast is more focused on a single use of studio-like recordings and noise separation by using the machine learning algorithm it has been trained on. 
         </p>
