@@ -1,9 +1,11 @@
 
-SPEAKER 2 0:00:00
+SPEAKER 1 0:00:00
 What's your interest in it, Mr. Wayne? 
-SPEAKER 1 0:00:03
+SPEAKER 2 0:00:03
 I want to borrow it for, uh, spelunking. 
-SPEAKER 2 0:00:07
+SPEAKER 1 0:00:07
 Spelunking? 
-SPEAKER 1 0:00:09
-Yeah, you know, cave diving. You're expecting to run into much gunfire in these caves. 
+SPEAKER 2 0:00:09
+Yeah, you know, cave diving. 
+SPEAKER 1 0:00:11
+You're expecting to run into much gunfire in these caves? 

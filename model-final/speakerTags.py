@@ -3,6 +3,7 @@ from pyannote.audio import Pipeline
 import re
 import whisper
 import webvtt
+from pyannote.core import Annotation
 
 def millisec(timeStr):
   spl = timeStr.split(":")
@@ -34,6 +35,11 @@ dz = pipeline(DEMO_FILE)
 with open("diarization.txt", "w") as text_file:
     text_file.write(str(dz))
 
+assert isinstance(dz, Annotation)
+
+for speech_turn, track, speaker in dz.itertracks(yield_label=True):
+    print(f"{speech_turn.start:4.1f} {speech_turn.end:4.1f} {speaker}")
+          
 sounds = spacer
 segments = []
 
@@ -119,3 +125,5 @@ with open("lexicap.txt", "w") as text_file:
     text_file.write(s)
 
 print(s)
+
+# can add separate audios for each speaker with preserved timestamps
