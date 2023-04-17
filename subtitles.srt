@@ -1,0 +1,32 @@
+1
+0.000 --> 5.000
+ What's your interest in it, Mr. Link?
+
+2
+5.000 --> 7.000
+ Or...
+
+3
+7.000 --> 9.000
+ A barrow at...
+
+4
+9.000 --> 13.000
+ For... uh... spill-on-king.
+
+5
+13.000 --> 15.000
+ Spill-on-king.
+
+6
+15.000 --> 18.000
+ Wrong.
+
+7
+18.000 --> 21.000
+ Yeah, you know, cave diving.
+
+8
+21.000 --> 26.000
+ Expecting to run into much gunfire in these caves.
+

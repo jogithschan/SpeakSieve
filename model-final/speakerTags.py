@@ -16,7 +16,7 @@ def convert_to_vtt_time(seconds):
     return f"{str(hours).zfill(2)}:{str(minutes).zfill(2)}:{str(int(seconds)).zfill(2)}.{str(milliseconds).zfill(3)}"
 
 
-audio = AudioSegment.from_mp3('C:/Users/jogit/Downloads/The Top 10 Phones in the World.mp3')
+audio = AudioSegment.from_mp3('C:/Users/jogit/Documents/IR Repos/CSE508_Winter2023_Group2_Project/model-final/newname.mp3')
 audio.export('audio.wav', format='wav')
 
 pipeline = Pipeline.from_pretrained('pyannote/speaker-diarization', use_auth_token="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")
@@ -29,7 +29,7 @@ audio = spacer.append(audio, crossfade=0)
 audio.export('audio.wav', format='wav')
 
 DEMO_FILE = {'uri': 'blabal', 'audio': 'audio.wav'}
-dz = pipeline('audio.wav')  
+dz = pipeline(DEMO_FILE)  
 
 with open("diarization.txt", "w") as text_file:
     text_file.write(str(dz))
@@ -41,19 +41,30 @@ dz = open('diarization.txt').read().splitlines()
 dzList = []
 for l in dz:
   start, end =  tuple(re.findall('[0-9]+:[0-9]+:[0-9]+\.[0-9]+', string=l))
-  start = millisec(start)
-  end = millisec(end)
-  speaker = re.findall(r'(?<=SPEAKER_)..', string=l)
-  dzList.append([start, end, speaker])
+  start = millisec(start) - spacermilli
+  end = millisec(end)  - spacermilli
+  lex = not re.findall('SPEAKER_01', string=l)
+  dzList.append([start, end, lex])
 
 print(*dzList[:10], sep='\n')
+
+sounds = spacer
+segments = []
+
+dz = open('diarization.txt').read().splitlines()
+for l in dz:
+  start, end =  tuple(re.findall('[0-9]+:[0-9]+:[0-9]+\.[0-9]+', string=l))
+  start = int(millisec(start)) #milliseconds
+  end = int(millisec(end))  #milliseconds
+  
+  segments.append(len(sounds))
+  sounds = sounds.append(audio[start:end], crossfade=0)
+  sounds = sounds.append(spacer, crossfade=0)
 
 sounds.export("dz.wav", format="wav")
 
-print(*dzList[:10], sep='\n')
-
-# model = whisper.load_model("base")
-model = whisper.load_model("tiny")
+model = whisper.load_model("base")
+# model = whisper.load_model("tiny")
 result = model.transcribe('dz.wav')
 
 # save to srt
