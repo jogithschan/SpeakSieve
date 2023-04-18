@@ -4,9 +4,6 @@ import mp3_file from './sample.mp3';
 import './ConfirmedPage.css'
 
 
-
-//...
-
 const ConfirmedPage = () => {
     return (
 

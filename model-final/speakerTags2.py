@@ -17,14 +17,14 @@ import numpy as np
 
 
 # path = '../model-final/newname.mp3'
-path = 'model-final\hailhydra3.mp3'
+path = 'hailhydra3.mp3'
 
 # set parameters - need frontend to change settings
-num_speakers = 1 #{type:"integer"}
+num_speakers = 2 #{type:"integer"}
 
 language = 'English' #['any', 'English']
 
-model_size = 'medium' #['tiny', 'base', 'small', 'medium', 'large']
+model_size = 'small' #['tiny', 'base', 'small', 'medium', 'large']
 
 
 model_name = model_size
@@ -91,3 +91,4 @@ for (i, segment) in enumerate(segments):
     f.write("\n" + segment["speaker"] + ' ' + str(time(segment["start"])) + '\n')
   f.write(segment["text"][1:] + ' ')
 f.close()
+
