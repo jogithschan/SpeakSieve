@@ -1,9 +1,9 @@
-from fastapi import FastAPI, File, UploadFile, Form, Request
-import os
-import shutil
-import subprocess
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import base64
+from fastapi.responses import JSONResponse
+from speaker_tags_generator import transcribe_audio
+
 
 app = FastAPI()
 
@@ -31,5 +31,8 @@ async def process_audio(request: Request):
     with open(file_location, 'wb') as f:
         f.write(decoded_bytes)
         print(f"Saved audio at {file_location}")
+    
+    final_output = transcribe_audio(file_location)
+    # print(final_output)
 
-
+    return JSONResponse(content={"transcription": final_output})
