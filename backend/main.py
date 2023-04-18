@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import base64
 from fastapi.responses import JSONResponse
 from speaker_tags_generator import transcribe_audio
-
+import uvicorn
 
 app = FastAPI()
 
@@ -36,3 +36,6 @@ async def process_audio(request: Request):
     # print(final_output)
 
     return JSONResponse(content={"transcription": final_output})
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host="localhost", port=8000, log_level="info")
