@@ -8,6 +8,7 @@ import AboutProject from './components/AboutProject';
 import CustomNavbar from './components/CustomNavbar';
 import AboutTeam from './components/AboutTeam';
 import ConfirmedPage from './components/ConfirmedPage'
+import TranscriptionPage from './components/TranscriptionPage';
 
 export const userContext = createContext();
 
@@ -19,6 +20,7 @@ const Routing = () => {
       <Route path="/AboutTeam" element = { <AboutTeam/> } />
       <Route path="/AboutProject" element = { <AboutProject/> } />
       <Route path="/ConfirmedPage" element = { <ConfirmedPage/> } />
+      <Route path='/TranscriptionPage' element = { <TranscriptionPage/> } />
 
     </Routes>
   )

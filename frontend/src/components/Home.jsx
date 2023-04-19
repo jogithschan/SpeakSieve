@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { Container, Row, Col, Form, Collapse, Alert, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Form, Collapse, Alert, Spinner, Nav } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import './Home.css';
 import { Dropdown } from 'react-bootstrap';
-
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
@@ -18,6 +18,8 @@ const Home = () => {
     const [selectedModel, setSelectedModel] = useState('base')
     const [selectLanguage, setSelectLanguage] = useState('english')
     const [numberSpeakers, setNumberSpeakers] = useState(1)
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         let intervalId;
@@ -46,6 +48,13 @@ const Home = () => {
         setSelectedFile(e.target.files[0])
     }
 
+    const handleShowResults = () => {
+        navigate('/TranscriptionPage',  { state: { 
+            transcriptionResult : transcriptionResult
+            } 
+        })
+      };
+
     const updateFileUploaded = (e) => {
 
         if (selectedFile != null && selectedFile !== undefined) {
@@ -72,6 +81,7 @@ const Home = () => {
         try {
             const response = await axios.post('http://localhost:8000/process_audio', data)
             setTranscriptionResult(response.data.transcription)
+
         } catch (error) {
             console.error(error)
         }
@@ -170,6 +180,12 @@ const Home = () => {
 
                                                 <p><b>Time taken:</b> {elapsedTime} seconds</p>
                                                 
+                                                <div className="d-grid gap-2">
+                                                    <Button variant="secondary" size="lg"  onClick={handleShowResults}>
+                                                        Show Results
+                                                    </Button>
+                                                </div>
+
                                                 {transcriptionResult && (
                                                     <p>Transcription: {transcriptionResult}</p>
                                                 )}
@@ -177,6 +193,7 @@ const Home = () => {
                                                 <audio controls>
                                                     <source src={selectedFile} type='audio/mpeg' />
                                                 </audio>
+
                                             </div>
                                         )}
 
