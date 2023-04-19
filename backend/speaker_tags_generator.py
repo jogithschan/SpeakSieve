@@ -13,6 +13,9 @@ import numpy as np
 import json
 
 def transcribe_audio(path, num_speakers=2, language='English', model_size='small'):
+    
+    print(f"Runnig model with the params: \nNumber of speakers: {num_speakers} \nLanguage: {language} \nModel Size: {model_size}")
+    
     model_name = model_size
     if language == 'English' and model_size != 'large':
         model_name += '.en'

@@ -14,12 +14,20 @@ const Home = () => {
     const [fileUploaded, setFileUploaded] = useState(false)
     const [transcriptionResult, setTranscriptionResult] = useState(null)
     const [processing, setProcessing] = useState(false)
-
+    const [elapsedTime, setElapsedTime] = useState(0);
     const [selectedModel, setSelectedModel] = useState('base')
     const [selectLanguage, setSelectLanguage] = useState('english')
     const [numberSpeakers, setNumberSpeakers] = useState(1)
 
-
+    useEffect(() => {
+        let intervalId;
+        if (processing) {
+        intervalId = setInterval(() => {
+            setElapsedTime(prevElapsedTime => prevElapsedTime + 1);
+        }, 1000);
+        }
+        return () => clearInterval(intervalId);
+    }, [processing]);
 
     const handleModelSelect = (model) => {
         setSelectedModel(model);
@@ -39,6 +47,7 @@ const Home = () => {
     }
 
     const updateFileUploaded = (e) => {
+
         if (selectedFile != null && selectedFile !== undefined) {
             setFileUploaded(true)
             const reader = new FileReader()
@@ -51,6 +60,9 @@ const Home = () => {
 
     const sendAudioFile = async (file, fileData) => {
         const data = {
+            selectedModel: selectedModel,
+            selectLanguage: selectLanguage,
+            numberSpeakers: numberSpeakers,
             fileName: selectedFile.name,
             fileData: fileData
         };
@@ -148,12 +160,16 @@ const Home = () => {
                                             </div>
                                         )}
 
+                                        {processing && <p>Time elapsed: {elapsedTime} seconds</p>}
+
                                         {!processing && (
                                             <div>
                                                 <Alert key="success" variant='success'>
                                                     File uploaded successfully!
                                                 </Alert>
 
+                                                <p><b>Time taken:</b> {elapsedTime} seconds</p>
+                                                
                                                 {transcriptionResult && (
                                                     <p>Transcription: {transcriptionResult}</p>
                                                 )}

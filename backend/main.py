@@ -28,14 +28,16 @@ async def process_audio(request: Request):
     # print(file_location)
     decoded_bytes = base64.b64decode(data['fileData'])
 
+    params = [data['selectedModel'], data['selectLanguage'], data['numberSpeakers']]
+    
     with open(file_location, 'wb') as f:
         f.write(decoded_bytes)
         print(f"Saved audio at {file_location}")
     
-    final_output = transcribe_audio(file_location)
+    final_output = transcribe_audio(path=file_location, model_size=params[0], language=params[1], num_speakers=params[2])
     # print(final_output)
 
     return JSONResponse(content={"transcription": final_output})
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="localhost", port=8000, log_level="info")
+    uvicorn.run("main:app", host="localhost", port=8000, log_level="info", reload=True)
