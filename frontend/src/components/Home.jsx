@@ -18,6 +18,8 @@ const Home = () => {
     const [selectedModel, setSelectedModel] = useState('base')
     const [selectLanguage, setSelectLanguage] = useState('english')
     const [numberSpeakers, setNumberSpeakers] = useState(1)
+    const [fileLocationOs, setFileLocationOs] = useState(null)
+
     const navigate = useNavigate()
 
 
@@ -50,7 +52,8 @@ const Home = () => {
 
     const handleShowResults = () => {
         navigate('/TranscriptionPage',  { state: { 
-            transcriptionResult : transcriptionResult
+            transcriptionResult : transcriptionResult,
+            fileLocationOs : fileLocationOs
             } 
         })
       };
@@ -59,6 +62,8 @@ const Home = () => {
 
         if (selectedFile != null && selectedFile !== undefined) {
             setFileUploaded(true)
+            setElapsedTime(0)
+
             const reader = new FileReader()
             reader.readAsDataURL(selectedFile);
             reader.onload = () => {
@@ -81,7 +86,7 @@ const Home = () => {
         try {
             const response = await axios.post('http://localhost:8000/process_audio', data)
             setTranscriptionResult(response.data.transcription)
-
+            setFileLocationOs(response.data.file_location)
         } catch (error) {
             console.error(error)
         }
