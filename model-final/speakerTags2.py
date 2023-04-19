@@ -1,4 +1,5 @@
 import whisper
+import whisperx
 import datetime
 
 import subprocess
@@ -11,20 +12,26 @@ from pyannote.core import Segment
 
 import wave
 import contextlib
+import csv
 
 from sklearn.cluster import AgglomerativeClustering
 import numpy as np
 
+def time(secs):
+  return datetime.timedelta(seconds=round(secs))
 
-# path = '../model-final/newname.mp3'
-path = 'hailhydra3.mp3'
+
+path = 'model-final\hailhydra3.mp3'
+
+#set device
+device = "cuda"
 
 # set parameters - need frontend to change settings
-num_speakers = 2 #{type:"integer"}
+num_speakers = 1 #{type:"integer"}
 
 language = 'English' #['any', 'English']
 
-model_size = 'small' #['tiny', 'base', 'small', 'medium', 'large']
+model_size = 'medium' #['tiny', 'base', 'small', 'medium', 'large']
 
 
 model_name = model_size
@@ -46,8 +53,36 @@ model = whisper.load_model(model_size)
 # transcribe the audio using the whisper model
 result = model.transcribe(path)
 
-# checkout segments from the model output
+# checkout segments from the model outputs
 segments = result["segments"]
+
+# print(segments)
+# code for word-level timestamps
+model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
+
+# align whisper output
+result_aligned = whisperx.align(segments, model_a, metadata, path, device)
+
+words = result_aligned["word_segments"]
+
+# print(words)
+
+# f = open("transcript-word.txt", "w")
+
+# for (i, segment) in enumerate(words):
+#   # if i == 0 or segments[i - 1]["speaker"] != segment["speaker"]:
+#   # f.write("\n" + str(time(segment["start"])) + ' ' + str(time(segment["end"])) + ' ' + segment["text"] )
+#   f.write("\n" + str(segment["start"]) + ' ' + str(segment["end"]) + ' ' + segment["text"] )
+# f.close()
+
+with open('transcript-word.csv', mode='w', newline='') as file:
+    # Create a CSV writer object
+    writer = csv.writer(file)
+
+    for (i, segment) in enumerate(words):
+      row = [str(segment["start"]), str(segment["end"]), segment["text"]]
+
+      writer.writerow(row)
 
 # get framerate
 with contextlib.closing(wave.open(path,'r')) as f:
@@ -81,14 +116,11 @@ for i in range(len(segments)):
   segments[i]["speaker"] = 'SPEAKER ' + str(labels[i] + 1)
 
 # write the output to a txt file
-def time(secs):
-  return datetime.timedelta(seconds=round(secs))
 
 f = open("transcript.txt", "w")
 
 for (i, segment) in enumerate(segments):
-  if i == 0 or segments[i - 1]["speaker"] != segment["speaker"]:
-    f.write("\n" + segment["speaker"] + ' ' + str(time(segment["start"])) + '\n')
+  # if i == 0 or segments[i - 1]["speaker"] != segment["speaker"]:
+  f.write("\n" + segment["speaker"] + ' ' + str(time(segment["start"])) + ' ' + str(time(segment["end"])) + '\n')
   f.write(segment["text"][1:] + ' ')
 f.close()
-
