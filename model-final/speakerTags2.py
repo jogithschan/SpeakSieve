@@ -21,17 +21,17 @@ def time(secs):
   return datetime.timedelta(seconds=round(secs))
 
 
-path = 'model-final\hailhydra3.mp3'
+path = 'name.opus'
 
 #set device
 device = "cuda"
 
 # set parameters - need frontend to change settings
-num_speakers = 1 #{type:"integer"}
+num_speakers = 2 #{type:"integer"}
 
 language = 'English' #['any', 'English']
 
-model_size = 'medium' #['tiny', 'base', 'small', 'medium', 'large']
+model_size = 'large' #['tiny', 'base', 'small', 'medium', 'large']
 
 
 model_name = model_size
@@ -124,3 +124,12 @@ for (i, segment) in enumerate(segments):
   f.write("\n" + segment["speaker"] + ' ' + str(time(segment["start"])) + ' ' + str(time(segment["end"])) + '\n')
   f.write(segment["text"][1:] + ' ')
 f.close()
+
+with open('transcript.csv', mode='w', newline='') as file:
+    # Create a CSV writer object
+    writer = csv.writer(file)
+
+    for (i, segment) in enumerate(segments):
+      row = [segment["speaker"], str(segment["start"]), str(segment["end"]), segment["text"][1:]]
+
+      writer.writerow(row)
