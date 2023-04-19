@@ -21,7 +21,7 @@ def time(secs):
   return datetime.timedelta(seconds=round(secs))
 
 
-path = 'name.opus'
+path = 'newname.mp3'
 
 #set device
 device = "cuda"
@@ -31,7 +31,7 @@ num_speakers = 2 #{type:"integer"}
 
 language = 'English' #['any', 'English']
 
-model_size = 'large' #['tiny', 'base', 'small', 'medium', 'large']
+model_size = 'medium' #['tiny', 'base', 'small', 'medium', 'large']
 
 
 model_name = model_size

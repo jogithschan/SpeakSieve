@@ -6,7 +6,7 @@ import csv
 speaker_no = 1
 
 # Load the audio file
-path = 'fudge.mp3'
+path = 'newname.mp3'
 
 audio_file = AudioSegment.from_file(path, format="mp3")
 
