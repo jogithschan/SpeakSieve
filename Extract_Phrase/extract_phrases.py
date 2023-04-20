@@ -1,3 +1,5 @@
+#Requirements: User will enter a string(word or phrase)
+
 # -*- coding: utf-8 -*-
 """extract_phrases.ipynb
 
