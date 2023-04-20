@@ -26,7 +26,7 @@ async def process_audio(request: Request):
     data = await request.json()
 
     # file_location = f"audio_files/{data['fileName']}"
-    file_name = data['fileName']
+    file_name = "original_audio.mp3"
     file_location = os.path.abspath(os.path.join("audio_files", file_name))
     # print(file_location)
     decoded_bytes = base64.b64decode(data['fileData'])
