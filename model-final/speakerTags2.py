@@ -24,14 +24,14 @@ def time(secs):
 path = 'newname.mp3'
 
 #set device
-device = "cuda"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # set parameters - need frontend to change settings
 num_speakers = 2 #{type:"integer"}
 
 language = 'English' #['any', 'English']
 
-model_size = 'medium' #['tiny', 'base', 'small', 'medium', 'large']
+model_size = 'small' #['tiny', 'base', 'small', 'medium', 'large']
 
 
 model_name = model_size
