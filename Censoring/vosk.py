@@ -160,7 +160,7 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
     return wav_audio, indices
 
 def run(path_to_audio, input_string, path_to_csv = "timestamp.csv"):
-    our_dict = {"STATUS":None, "Audio":None}
+    our_arr = [{"STATUS":None} , {"Name": None}]
 
     se_dict,se_df,full_text = generate_se_dict(path_to_csv)
     wav_audio = get_wav_audio(path_to_audio)
@@ -170,13 +170,15 @@ def run(path_to_audio, input_string, path_to_csv = "timestamp.csv"):
     new_audio, indices = add_bleep(wav_audio, bleeped_words, se_dict, se_df, full_text)
 
     if (new_audio == False):
-        our_dict["STATUS"] = False
-        return our_dict
+        our_arr[0]["STATUS"] = False
+        return our_arr
 
     alter_csv(path_to_csv, se_df, indices)
 
-    new_audio.export(f"audio_files\\{path_to_audio[:-4]}_bleeped.wav", format="wav")
-    our_dict["STATUS"] = True
-    our_dict["Audio"] = new_audio
+    audio_name = f"audio_files\\{path_to_audio[:-4]}_bleeped.wav"
+    new_audio.export(audio_name, format="wav")
+    our_arr[0]["STATUS"] = True
+    our_arr[1]["Name"] = audio_name
+    #our_arr[1]["Audio"] = new_audio
 
-    return our_dict
+    return our_arr
