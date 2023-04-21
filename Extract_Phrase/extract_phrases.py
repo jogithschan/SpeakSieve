@@ -1,4 +1,5 @@
 #Requirements: User will enter a string(word or phrase)
+#Input format to function: a string(given by user), and audio name(given by us)
 
 # -*- coding: utf-8 -*-
 """extract_phrases_audio.ipynb
@@ -22,7 +23,76 @@ import re
 from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
 
-find="Yeah, you know, cave diving.	"
+def extract_phrases(string,audio_name):
+  string=stem(punc(string))
+
+  all=pd.read_csv("transcript-word.csv",header=None)
+  all[3]=all[2].apply(punc)
+  all[4] = all[3].apply(stem)
+
+  audio_file = AudioSegment.from_file(audio_name, format="mp3")
+  spacer_sound = AudioSegment.silent(duration=1000)   
+
+  all2=pd.read_csv("transcript.csv",header=None)
+  all2[4]=all2[3].apply(punc)
+  all2[5] = all2[4].apply(stem)
+
+  l1=all[2]
+  l2=all[3]
+  l3=all[4]
+  q=string.split()
+  ts=[]
+  ind=[]
+  for i in range(len(l1)):
+    if(l1[i]==q[0] or l2[i]==q[0] or l3[i]==q[0]):
+      p=1
+      for k in range(i+1,len(l1)):
+        if(p<len(q) and (l1[k]==q[p] or l2[k]==q[p] or l3[k]==q[p])):
+          p+=1
+          continue
+        elif(p==len(q)):
+          ts.append([all[0][i],all[1][i+p-1]])
+          ind.append([i,i+p-1])
+          break
+        else:
+          break
+
+  flag=False
+  bold_ind=[]
+  for i in range(len(ind)):
+    s=ind[i][0]
+    line=0
+    for k in range(len(all2)):
+      if(s>=len(all2.iloc[k,5].split())):
+        s-=len(all2.iloc[k,5].split())
+        continue
+      else:
+        line=k
+        break
+    e=s+ind[i][1]-ind[i][0]
+    if(e>=len(all2.iloc[line,5].split())):
+      del ind[i]
+      del ts[i]
+    else:
+      flag=True
+      bold_ind.append([line,s,e])
+
+  output=[]
+
+  if(flag==False):
+    output.append({'STATUS':False})
+  else:
+    output.append({'STATUS':True})
+
+  for k in range(len(ts)):
+    temp={}
+    temp['index']=(bold_ind[k][0],bold_ind[k][1],bold_ind[k][2])
+    temp['audio']='phrase'+str(k)+'.wav'
+    audio=audio_file[ts[k][0]*1000-20:ts[k][1]*1000+40]
+    audio.export(f"audio_files/phrase{k}.wav",format="wav")
+    output.append(temp)
+
+  return output
 
 def punc(string,bool=True):
   string = re.sub(r'[^\w\s]', '', string)
@@ -33,73 +103,3 @@ def stem(string):
   ps = PorterStemmer()
   stemmed_string = ' '.join([ps.stem(words) for words in list2])
   return stemmed_string
-
-find=stem(punc(find))
-find
-
-all=pd.read_csv("transcript-word.csv",header=None)
-
-path = 'newname.mp3'
-audio_file = AudioSegment.from_file(path, format="mp3")
-spacer_sound = AudioSegment.silent(duration=1000) 
-
-all[3]=all[2].apply(punc)
-all[4] = all[3].apply(stem)
-
-all2=pd.read_csv("transcript.csv",header=None)
-
-all2[4]=all2[3].apply(punc)
-all2[5] = all2[4].apply(stem)
-# all2
-
-l1=all[2]
-l2=all[3]
-l3=all[4]
-q=find.split()
-ts=[]
-ind=[]
-for i in range(len(l1)):
-  if(l1[i]==q[0] or l2[i]==q[0] or l3[i]==q[0]):
-    p=1
-    for k in range(i+1,len(l1)):
-      if(p<len(q) and (l1[k]==q[p] or l2[k]==q[p] or l3[k]==q[p])):
-        p+=1
-        continue
-      elif(p==len(q)):
-        ts.append([all[0][i],all[1][i+p-1]])
-        ind.append([i,i+p-1])
-        break
-      else:
-        break
-
-flag=False
-bold_ind=[]
-for i in range(len(ind)):
-  s=ind[i][0]
-  line=0
-  for k in range(len(all2)):
-    if(s>=len(all2.iloc[k,5].split())):
-      s-=len(all2.iloc[k,5].split())
-      continue
-    else:
-      line=k
-      break
-  e=s+ind[i][1]-ind[i][0]
-  if(e>=len(all2.iloc[line,5].split())):
-    del ind[i]
-    del ts[i]
-  else:
-    flag=True
-    bold_ind.append([line,s,e])
-
-if(flag==False):
-  print("no such phrase exists")
-
-bold_ind
-
-extracted_audios=[]
-for i in range(len(ts)):
-  extracted_audios.append(audio_file[ts[i][0]*1000-20:ts[i][1]*1000+40])
-
-for i in range(len(extracted_audios)):
-  extracted_audios[i].export(f"out{i}.wav",format="wav")
