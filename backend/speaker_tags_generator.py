@@ -99,6 +99,8 @@ def transcribe_audio(path, num_speakers=2, language='English', model_size='small
         writer = csv.writer(file)
 
         for (i, segment) in enumerate(segments):
+            print(segment["text"][1:])
+            
             row = [segment["speaker"], str(segment["start"]), str(segment["end"]), segment["text"][1:]]
 
             writer.writerow(row)
@@ -126,7 +128,7 @@ def transcribe_audio(path, num_speakers=2, language='English', model_size='small
         end_time = float(obj["end_time"]) * 1000
         part = audio[start_time:end_time]
         
-        audio_part = f"part{i+1}.mp3"
+        audio_part = f"trascript-part-{i+1}.mp3"
         audio_path = "audio_files/" + audio_part
 
         data[i]['audio_file'] = audio_part

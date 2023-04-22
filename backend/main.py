@@ -5,6 +5,10 @@ from fastapi.responses import JSONResponse, FileResponse
 from speaker_tags_generator import transcribe_audio
 import uvicorn
 import os
+import shutil
+from extract_phrases import extract_phrases
+import voice_censoring_api
+import get_all_dialogues
 
 app = FastAPI()
 
@@ -31,6 +35,10 @@ async def process_audio(request: Request):
     # print(file_location)
     decoded_bytes = base64.b64decode(data['fileData'])
 
+    if os.path.exists("audio_files"):
+        shutil.rmtree("audio_files")
+    os.mkdir("audio_files")
+
     params = [data['selectedModel'], data['selectLanguage'], data['numberSpeakers']]
     
     with open(file_location, 'wb') as f:
@@ -41,6 +49,38 @@ async def process_audio(request: Request):
     # print(final_output)
 
     return JSONResponse(content={"transcription": final_output, "file_location": data['fileName']})
+
+@app.post("/get_all")
+async def get_all(request: Request):
+    data = await request.json()
+
+    speaker_num = int(data['speaker_num'])
+    
+    json_result = get_all_dialogues.extract_speaker_audio(speaker_no=speaker_num)
+    audio_name = get_all_dialogues.split_audio_by_speaker(speaker_no=speaker_num)
+
+    return JSONResponse(content={"final_result": json_result, "audio_name": audio_name})
+
+@app.post("/extract_phrases")
+async def extract_phrases_from_audio(request: Request):
+    data = await request.json()
+    phrase = data['phrase']
+    
+    audio_url = "audio_files/original_audio.mp3"
+    response = extract_phrases(string=phrase, audio_name=audio_url)
+    print(response)
+
+    return JSONResponse(content={"search_result":response})
+
+@app.post("/voice_filter")
+async def voice_filter(request: Request):
+    data = await request.json()
+    phrase = data['phrase']
+
+    response = voice_censoring_api.run(input_string=phrase)
+    print(response)
+
+    return JSONResponse(content={"filter_result":response})
 
 @app.get("/audio/{file_name}")
 async def get_audio(file_name: str):

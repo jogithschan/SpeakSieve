@@ -1,5 +1,5 @@
 
-SPEAKER 1 0:00:00 0:00:02
+SPEAKER 2 0:00:00 0:00:02
 Tomorrow. 
 SPEAKER 1 0:00:11 0:00:14
 Hydra will stand, master of the world. 
@@ -9,5 +9,5 @@ SPEAKER 1 0:00:18 0:00:22
 Our enemies weapons will be powerless against us. 
 SPEAKER 1 0:00:23 0:00:28
 If they shoot down one plane, 100 small will reign fire upon them. 
-SPEAKER 1 0:00:30 0:00:40
+SPEAKER 2 0:00:30 0:00:40
 If they cut off one head to Marshal, take its place, a hydra. 
