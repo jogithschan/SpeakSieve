@@ -204,7 +204,7 @@ const TranscriptionPage = () => {
               size="lg"
               onClick={handleGetAllDialoguesClick}
             >
-              Get All Dialogues
+              Get All Monologues
             </Button>
           </ButtonGroup>
 
