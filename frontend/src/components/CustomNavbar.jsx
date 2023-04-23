@@ -11,7 +11,7 @@ const CustomNavbar = () => {
     <>
         <Navbar bg="dark" variant="dark">
             <Container>
-            <Navbar.Brand href="/Home">Project Name</Navbar.Brand>
+            <Navbar.Brand href="/Home">SpeakSieve</Navbar.Brand>
             <Nav className="me-auto">
                 <Nav.Link href="/Home">Home</Nav.Link>
                 <Nav.Link href="/AboutProject">About Project</Nav.Link>

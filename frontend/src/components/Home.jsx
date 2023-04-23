@@ -191,14 +191,6 @@ const Home = () => {
                                                     </Button>
                                                 </div>
 
-                                                {transcriptionResult && (
-                                                    <p>Transcription: {transcriptionResult}</p>
-                                                )}
-
-                                                <audio controls>
-                                                    <source src={selectedFile} type='audio/mpeg' />
-                                                </audio>
-
                                             </div>
                                         )}
 
