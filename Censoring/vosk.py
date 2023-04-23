@@ -145,8 +145,9 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
     bleep_volume = 30
 
     for i in timestamps_arr:
-        end = i[1] - 20
-        start = i[0] + 20
+        start = i[0] - 20
+        end = i[1] + 20
+        
         
         duration = (end - start)
         
