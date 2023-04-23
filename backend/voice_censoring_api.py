@@ -145,8 +145,9 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
     bleep_volume = 30
 
     for i in timestamps_arr:
-        end = i[1]
-        start = i[0]
+        start = i[0] - 20
+        end = i[1] + 20
+        
         
         duration = (end - start)
         
@@ -160,6 +161,7 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
     return wav_audio, indices
 
 def run(input_string, path_to_audio="audio_files/original_audio.mp3", path_to_csv = "transcript-word.csv"):
+
     our_arr = [{"STATUS":None} , {"Name": None}]
 
     se_dict,se_df,full_text = generate_se_dict(path_to_csv)
