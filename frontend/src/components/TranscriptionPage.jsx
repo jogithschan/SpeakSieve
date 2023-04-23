@@ -33,6 +33,8 @@ const TranscriptionPage = () => {
   const [finalFilterAudioResult, setFinalFilterAudioResult] = useState(null)
   const [finalGetResultDial, setFinalGetResultDial] = useState(null)
   const [finalAudioPath, setFinalAudioPath] = useState(null)
+  const [redactedTranscript, setRedactedTranscript] = useState(null)
+
 
 
 
@@ -132,6 +134,8 @@ const TranscriptionPage = () => {
     try {
       const response = await axios.post('http://localhost:8000/voice_filter', data)
       const result = response.data.filter_result
+      const redacted = response.data.final_output
+      setRedactedTranscript(JSON.parse(redacted))
 
       if (result[0].STATUS) {
         alert("Filter successful")
@@ -357,7 +361,7 @@ const TranscriptionPage = () => {
             <h3 style={{ padding: '20px 50px 20px 200px' }}>Filtered Audio</h3>
             <ReactAudioPlayer src={`http://localhost:8000/audio/${finalFilterAudioResult}`} controls />
           </div>
-{/* 
+
             <Table striped bordered hover>
             <thead>
               <tr>
@@ -365,11 +369,10 @@ const TranscriptionPage = () => {
                 <th style={{ width: '15%' }}>Start Time</th>
                 <th style={{ width: '15%' }}>End Time</th>
                 <th style={{ width: '50%' }}>Text</th>
-                <th style={{ width: '10%' }}>Audio</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => {
+              {redactedTranscript.map((item, index) => {
                 // Replace speaker names with desired values
                 const speaker = item.speaker.replace("SPEAKER ", "Speaker ");
                 return (
@@ -377,15 +380,13 @@ const TranscriptionPage = () => {
                     <td style={{ width: '15%' }}>{speaker}</td>
                     <td style={{ width: '15%' }}>{parseFloat(item.start_time).toFixed(2)}</td>
                     <td style={{ width: '15%' }}>{parseFloat(item.end_time).toFixed(2)}</td>
-                    <td style={{ width: '50%', textAlign: 'left' }}>{item.text}</td>
-                    <td style={{ width: '10%' }}>
-                      <ReactAudioPlayer src={`http://localhost:8000/audio/${item.audio_file}`} controls />
-                    </td>
+                    {/* <td style={{ width: '50%', textAlign: 'left' }}>{item.text}</td> */}
+                  <td style={{ width: '50%', textAlign: 'left' }} dangerouslySetInnerHTML={{ __html: item.text }}></td>
                   </tr>
                 );
               })}
             </tbody>
-          </Table> */}
+          </Table>
           </>
         )}
 

@@ -9,6 +9,8 @@ import shutil
 from extract_phrases import extract_phrases
 import voice_censoring_api
 import get_all_dialogues
+import csv
+import json
 
 app = FastAPI()
 
@@ -78,9 +80,27 @@ async def voice_filter(request: Request):
     phrase = data['phrase']
 
     response = voice_censoring_api.run(input_string=phrase)
-    print(response)
+    # print(response)
 
-    return JSONResponse(content={"filter_result":response})
+    redacted_json = []
+    rows = []
+    with open('transcript_bleeped.csv') as csv_file:
+        reader = csv.reader(csv_file, delimiter=',')
+        rows = [row for row in reader]
+
+    for i in range(1, len(rows)):
+        obj = {
+            "speaker": rows[i][0],
+            "start_time": rows[i][1],
+            "end_time": rows[i][2],
+            "text": rows[i][3]
+        }
+        
+        redacted_json.append(obj)
+    
+    final_output = json.dumps(redacted_json, indent=2)
+
+    return JSONResponse(content={"filter_result":response, "final_output":final_output})
 
 @app.get("/audio/{file_name}")
 async def get_audio(file_name: str):

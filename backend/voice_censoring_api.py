@@ -116,10 +116,32 @@ def merge_full_text(full_text):
 
     return output_string
 
-def alter_csv(path_to_csv, se_df, indices):
+def alter_csv(t_df, se_df, indices):
     indices.sort()
-    se_df.loc[indices, 2] = "<REDACTED>"
-    se_df.to_csv(f'{path_to_csv[:-4]}_bleeped.csv', index=False, header=False)
+
+    arr = []
+    i = 0
+    
+    for index, row in t_df.iterrows():
+        # print(row)
+        curr = []
+        txt = row[3].split()
+
+        for j in txt:
+            if i in indices:
+                curr.append("<b>[REDACTED]</b>")
+            else:
+                curr.append(j)
+            i+=1
+
+        new_s = merge_full_text(curr)
+        arr.append(new_s)
+
+    del t_df[3]
+
+    t_df[3] = arr
+
+    t_df.to_csv('transcript_bleeped.csv', index = False)
 
 def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
     timestamps_arr = []
@@ -148,7 +170,6 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
         start = i[0] - 20
         end = i[1] + 20
         
-        
         duration = (end - start)
         
         # Create a bleep sound segment with the same duration as the word segment and apply gain
@@ -160,9 +181,10 @@ def add_bleep(wav_audio, input_arr, se_dict, se_df, full_text):
 
     return wav_audio, indices
 
-def run(input_string, path_to_audio="audio_files/original_audio.mp3", path_to_csv = "transcript-word.csv"):
-
+def run(input_string,path_to_audio="audio_files/original_audio.mp3", path_to_csv = "transcript-word.csv", path_to_transcript = "transcript.csv"):
     our_arr = [{"STATUS":None} , {"Name": None}]
+
+    t_df = pd.read_csv(path_to_transcript, header = None)
 
     se_dict,se_df,full_text = generate_se_dict(path_to_csv)
     wav_audio = get_wav_audio(path_to_audio)
@@ -175,7 +197,7 @@ def run(input_string, path_to_audio="audio_files/original_audio.mp3", path_to_cs
         our_arr[0]["STATUS"] = False
         return our_arr
 
-    alter_csv(path_to_csv, se_df, indices)
+    alter_csv(t_df, se_df, indices)
 
     audio_name = f"{path_to_audio[:-4]}_bleeped.wav"
     new_audio.export(audio_name, format="wav")
