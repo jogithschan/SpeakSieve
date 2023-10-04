@@ -1,5 +1,5 @@
 # SpeakSieve
-SpeakSieve is a project that aims to transcribe audio files and provide filtered dialogue based on the speaker. It has a frontend built with React and a backend built with FastAPI.
+SpeakSieve is a tool to filter audio speaker-wise and transcribe the audio files to perform tasks like censoring and termsearch. It has a frontend built with React and a backend built with FastAPI.
 
 ## Getting Started
 
